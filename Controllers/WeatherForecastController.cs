@@ -31,8 +31,8 @@ public class WeatherForecastController : ControllerBase
     }
 
     [HttpGet("vikash")]
-    public string vikash()
+    public string Vikash()
     {
-        return "Vikash Kumar";
+        return "this message is coming through ci/cd";
     }
 }
