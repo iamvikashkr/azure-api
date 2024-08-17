@@ -1,7 +1,10 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace azure_api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class WeatherForecastController : ControllerBase
@@ -21,7 +24,7 @@ public class WeatherForecastController : ControllerBase
     [HttpGet(Name = "GetWeatherForecast")]
     public IEnumerable<WeatherForecast> Get()
     {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        return Enumerable.Range(1, 1).Select(index => new WeatherForecast
         {
             Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
             TemperatureC = Random.Shared.Next(-20, 55),
@@ -31,10 +34,20 @@ public class WeatherForecastController : ControllerBase
     }
 
     [HttpGet("vikash")]
-    public string Vikash()
+    public IActionResult Vikash()
     {
+        var userClaims = User.Identity as System.Security.Claims.ClaimsIdentity;
+        var req = Request;
         _logger.LogError($"Hi Vikash, Error log {DateTime.Now}");
         _logger.LogInformation($"Hi Vikash, Info log {DateTime.Now}");
-        return "this message is coming through ci/cd";
+
+        IDictionary<string, object> user = new Dictionary<string, object>();
+        foreach (var item in userClaims.Claims)
+        {
+            user.Add(item.Type, item.Value);
+        }
+
+        // user.Add("token", req.Headers["Cookie"].ToString());
+        return Ok(user);
     }
 }
