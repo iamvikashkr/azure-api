@@ -33,6 +33,8 @@ public class WeatherForecastController : ControllerBase
     [HttpGet("vikash")]
     public string Vikash()
     {
+        _logger.LogError($"Hi Vikash, Error log {DateTime.Now}");
+        _logger.LogInformation($"Hi Vikash, Info log {DateTime.Now}");
         return "this message is coming through ci/cd";
     }
 }
