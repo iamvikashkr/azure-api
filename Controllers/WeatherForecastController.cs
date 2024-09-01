@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,17 +36,18 @@ public class WeatherForecastController : ControllerBase
     public IActionResult Vikash()
     {
         var userClaims = User.Identity as System.Security.Claims.ClaimsIdentity;
-        var req = Request;
-        _logger.LogError($"Hi Vikash, Error log {DateTime.Now}");
-        _logger.LogInformation($"Hi Vikash, Info log {DateTime.Now}");
+        // _logger.LogError($"Hi Vikash, Error log {DateTime.Now}");
+        // _logger.LogInformation($"Hi Vikash, Info log {DateTime.Now}");
 
         IDictionary<string, object> user = new Dictionary<string, object>();
-        foreach (var item in userClaims.Claims)
+        foreach (var item in userClaims?.Claims)
         {
-            user.Add(item.Type, item.Value);
+            if (!user.ContainsKey(item.Type))
+            {
+                user.Add(item.Type, item.Value);
+            }
         }
 
-        // user.Add("token", req.Headers["Cookie"].ToString());
         return Ok(user);
     }
 }
